@@ -1,16 +1,16 @@
 # TI Konnektor Patch
 
-Die Telematik Infrastruktur (TI) Konnektoren enthalten Smartcards, auf denen Zertifikate gespeichert sind.
+Die **Telematik Infrastruktur** (TI) Konnektoren enthalten Smartcards, auf denen Zertifikate gespeichert sind.
 Diese Zertifikate haben genau wie TLS Zertifikate aus Sicherheitsgründen ein Verfallsdatum.
 Leider haben nicht alle Hersteller einen Mechanismus entwickelt, diese Zertifikate zu verlängern und stattdessen zu Lasten der Umwelt ein Produkt mit geplanter Obsoloszenz verkauft.
 
-Nun hat sich die gematik, welche die TI verantwortet, zum Austausch der Konnektoren entschieden, was erhebliche Kosten von 300 bis 400 Millionen erzeugt!
+Nun hat sich die gematik, welche die TI verantwortet, zum Austausch der Konnektoren entschieden, was erhebliche **Kosten von 300 bis 400 Millionen Euro** erzeugt!
 
-Wir zeigen hier kostenlos eine Softwarelösung für das Problem auf, von der die Hersteller behaupten, dass sie unmöglich sei.
+Wir zeigen hier <u>kostenlos</u> eine Softwarelösung für das Problem auf, von der die Hersteller behaupten, dass sie unmöglich sei.
 
 ## Funktionsweise
 
-Unser Patch klinkt sich in die Kommunkation zwischen der Software auf dem Konnektor und der SmartCard ein. Das geht, weil die Kommunikation zur SmartCard nicht abgesichert ist. Unter anderem deshalb war auch der [Angriff](https://twitter.com/fluepke/status/1576584063896256513) auf den "sicheren" Speicher im Secunet Adapter möglich.
+Unser Patch klinkt sich in die Kommunkation zwischen der Software auf dem Konnektor und der SmartCard ein. Das geht, weil die Kommunikation zur SmartCard nicht abgesichert ist. Unter anderem deshalb war auch der [Angriff](https://twitter.com/fluepke/status/1576584063896256513) auf den "sicheren" Speicher im *Secunet* Adapter möglich.
 
 Sowohl bei dem Produkt der *Secunet* als auch der *CompuGroup Medical* kommt die Software `pcscd` zur Kommunikation mit den SmartCards zum Einsatz. Diese Software öffnet ein Unix Socket (z.B. in `/var/run/pcscd.comm`) über das Anwendungen mit dem `pcscd` interagieren, um der SmartCard Befehle zu senden und Antworten von dieser zu empfangen.
 
@@ -25,9 +25,9 @@ Wir verwenden einen handelsüblichen [`pcscd`](https://github.com/LudovicRoussea
 1. Der bestehene `pcscd` des Herstellers bleibt laufen, sein Socket wird aber an einen neuen Ort verschoben: `mv /var/run/pcscd.comm /var/run/old_pcscd.comm`
 2. Es ist ein handelsüblicher `pcscd` sowie `virtualsmartcard` zu installieren und zu starten. Wichtig ist, dass der `pcscd` konfiguriert wird, lediglich die Treiber für `virtualsmartcard` zu laden. Siehe dazu bspw. `./reader.conf.d`
 3. In dem Verzeichnis `./renewed_certs` sind die verlängerten Zertifikate mit folgenden Dateinamen zu hinterlegen:
-  1. `MF_DF.AK_EF.C.AK.AUT.R2048.der`
-  2. `MF_DF.NK_EF.C.NK.VPN.R2048.der`
-  3. `MF_DF.SAK.EF.C.SAK.AUT.R2048.der`
+    1. `MF_DF.AK_EF.C.AK.AUT.R2048.der`
+    2. `MF_DF.NK_EF.C.NK.VPN.R2048.der`
+    3. `MF_DF.SAK.EF.C.SAK.AUT.R2048.der`
 3. Es wird das `./save_400m_euro.py` Python Skript gestartet. Dieses verfolgt in der `execute()` Methode alle APDUs und prüft ob ein Zugriff auf die Zertifikatsdateien erfolgt. Per Environment wird dem Skript die Lokation des bisherigen `pcscd` mitgeteilt, damit eine Kommunikation zur echten SmartCard weiterhin möglich ist: `PCSCLITE_CSOCK_NAME=/var/run/old_pcscd.comm ./save_400m_euro.py`
 
 ## Installation
