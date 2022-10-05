@@ -3,14 +3,33 @@
 CMD_SELECT = 0xA4
 CMD_READ_BINARY = 0xB0
 
-DF_NK =   bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x03])
-EF_C_NK_VPN_R2048 = bytes([0xC5, 0x05])
+# Directory Files
+DF_AK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x02])
+DF_NK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x03])
+DF_SAK = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x04])
+
+# Elementary Files
+EF_C_AK_AUT_R2048  = bytes([0xC5, 0x03])
+EF_C_NK_VPN_R2048  = bytes([0xC5, 0x05])
+EF_C_SAK_AUT_R2048 = bytes([0xC5, 0x06])
 
 CARD_FS = {
+    DF_AK: {
+        EF_C_AK_AUT_R2048: {
+            'sfid': 0x03,
+            'replacement': './C.AK.AUT.R2048.der'
+        }
+    },
     DF_NK: {
         EF_C_NK_VPN_R2048: {
             'sfid': 0x05,
             'replacement': './C_NK_VPN_R2048.der'
+        }
+    },
+    DF_SAK: {
+        EF_C_SAK_AUT_R2048: {
+            'sfid': 0x06,
+            'replacement': './C.SAK.AUT.R2048.der'
         }
     }
 }
@@ -52,7 +71,7 @@ class PatchCard():
                 pass # TODO support all selection mode and keep track of currently selected df
         if msg[1] == CMD_READ_BINARY: # TODO support Short File Identifiers
             if self.current_df in CARD_FS and self.current_ef in CARD_FS[self.current_df]:
-                ef = CARD_FS[self.current_df]
+                ef = CARD_FS[self.current_df][self.current_ef]
                 # TODO implement read operations on the 'replacement' file
             
         if msg in commands_and_response:
