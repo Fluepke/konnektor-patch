@@ -32,6 +32,7 @@ def read_file(filename):
     with open(filename, mode='rb') as f:
         return f.read()
 
+
 def create_filesystem():
     """
     Create the card fileystem with the certificate files
@@ -105,7 +106,6 @@ class PatchCard(RelayOS):
 
         super().__init__(*args, **kwargs)
 
-
     def format_result(self, seekable, le, data, sw):
         """See Iso7816O implementation"""
         if not seekable:
@@ -127,9 +127,8 @@ class PatchCard(RelayOS):
 
         return R_APDU(result, inttostring(sw)).render()
 
-
     def execute(self, msg):
-        """Intercept message"""
+        """Handle messages and intercept filesystem handler"""
         # Parse PDU
         try:
             c = C_APDU(msg)
