@@ -44,7 +44,7 @@ def main(args):
     """Simulate Virtual SC Card"""
     # Setup logging
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format="%(asctime)s  [%(levelname)s] %(message)s",
         datefmt="%d.%m.%Y %H:%M:%S")
 
@@ -57,8 +57,7 @@ def main(args):
     # Import here, so the environment is patched before
     # loading the python `smartcard` package
     from patch_card.cards import PatchCard, SimulCard
-    # card_os = PatchCard(args.reader_num)
-    card_os = SimulCard()
+    card_os = PatchCard(args.reader_num)
 
     while True:
         try:
@@ -91,8 +90,8 @@ def main(args):
                     size, len(msg))
 
             answer = card_os.execute(msg)
-            logging.info("response APDU (%d bytes):\n  %s\n",
-                len(answer), hexdump(answer, indent=2))
+            #logging.info("response APDU (%d bytes):\n  %s\n",
+            #    len(answer), hexdump(answer, indent=2))
             vpc_send(sock, answer)
 
 
