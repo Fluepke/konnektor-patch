@@ -5,7 +5,7 @@ Aus Sicherheitsgründen haben diese Zertifikate ein Verfallsdatum, das heisst si
 Nicht alle Hersteller*innen haben einen Mechanismus zur Verlängerung der Zertifikate implementert, nach auslaufen der Zertifikate muss also der gesamte Konnektor getauscht werden.
 Aktuelle laufen die ersten Zertifikate aus. 
 
-Die gematik, das für die TI verantwortkiche Unternehmen, hat sich entschieden alle Konnektoren entsprechen auszutauschen. Dies erzeugt Kosten im Bereich vom **300 bis 400 Millionen Euro**
+Die gematik, das für die TI verantwortliche Unternehmen, hat sich entschieden alle Konnektoren entsprechen auszutauschen. Dies erzeugt Kosten im Bereich vom **300 bis 400 Millionen Euro**
 
 
 Wir zeigen hier <u>kostenlos</u> eine Softwarelösung für das Problem, von der die Hersteller behaupten, dass sie unmöglich sei.
