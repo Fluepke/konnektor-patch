@@ -11,9 +11,9 @@ from virtualsmartcard.SmartcardFilesystem import MF, DF, TransparentStructureEF
 CMD_SELECT_FILE = 0xA4
 
 # Directory Files
-DF_AK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44]) # 0x02
-DF_NK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44]) # 0x03
-DF_SAK = bytes([0xD2, 0x76, 0x00, 0x01, 0x44]) # 0x04
+DF_AK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x02])
+DF_NK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x03])
+DF_SAK = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x04])
 
 # Elementary Files
 EF_C_AK_AUT_R2048  = 0xC503 # bytes([0xC5, 0x03])
@@ -28,23 +28,23 @@ def create_filesystem():
     mf = MF(filedescriptor=FDB["DF"])
 
     # AK_AUT
-    df = DF(parent=mf, fid=0x02, dfname=DF_AK)
+    df = DF(parent=mf, fid=0x01, dfname=DF_AK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC503, data="CERT DATA")
+            parent=df, fid=0xC503, shortfid=0x03, data=b"CERT DATA")
     df.append(ef)
     mf.append(df)
 
     # NK_VPN
-    df = DF(parent=mf, fid=0x03, dfname=DF_NK)
+    df = DF(parent=mf, fid=0xAA00, dfname=DF_NK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC505, data="CERT DATA")
+            parent=df, fid=0xC505, shortfid=0x05, data=b"CERT DATA")
     df.append(ef)
     mf.append(df)
 
     # DF_SAK 
-    df = DF(parent=mf, fid=0x03, dfname=DF_NK)
+    df = DF(parent=mf, fid=0x02, dfname=DF_SAK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC505, data="CERT DATA")
+            parent=df, fid=0xC505, shortfid=0x06, data=b"CERT DATA")
     df.append(ef)
     mf.append(df)
 
