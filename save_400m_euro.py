@@ -1,89 +1,101 @@
-#!/bin/env python3
+#!/usr/bin/env python3
 
-CMD_SELECT = 0xA4
-CMD_READ_BINARY = 0xB0
+from os.path import dirname, realpath
+import os
+import sys
+import socket
+import errno
+import struct
+import logging
+from argparse import ArgumentParser
 
-# Directory Files
-DF_AK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x02])
-DF_NK  = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x03])
-DF_SAK = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x04])
+sys.path.append(dirname(realpath(__file__)))
 
-# Elementary Files
-EF_C_AK_AUT_R2048  = bytes([0xC5, 0x03])
-EF_C_NK_VPN_R2048  = bytes([0xC5, 0x05])
-EF_C_SAK_AUT_R2048 = bytes([0xC5, 0x06])
+from virtualsmartcard.utils import inttostring, hexdump
+from patch_card.vpc import (
+    vpc_connect,
+    vpc_send,
+    vpc_recv,
+)
 
-CARD_FS = {
-    DF_AK: {
-        EF_C_AK_AUT_R2048: {
-            'sfid': 0x03,
-            'replacement': './C.AK.AUT.R2048.der'
-        }
-    },
-    DF_NK: {
-        EF_C_NK_VPN_R2048: {
-            'sfid': 0x05,
-            'replacement': './C_NK_VPN_R2048.der'
-        }
-    },
-    DF_SAK: {
-        EF_C_SAK_AUT_R2048: {
-            'sfid': 0x06,
-            'replacement': './C.SAK.AUT.R2048.der'
-        }
-    }
-}
+def parse_args():
+    """Parse commandline arguments"""
+    parser = ArgumentParser()
+    parser.add_argument(
+        "-H", "--host", default="localhost")
+    parser.add_argument(
+        "-p", "--port", type=int, default=35963)
+    parser.add_argument(
+        "-s", "--pcsc-sock-name",
+        default="/var/run/old_pcscd.comm")
+    parser.add_argument(
+        "-r", "--reader-num", type=int, default=0)
+    return parser.parse_args()
 
-#from virtualsmartcard.VirtualSmartcard import SmartcardOS
-from smartcard.System import readers
-from smartcard.Exceptions import NoCardException
 
-class PatchCard():
-    """
-    gSMC-K wrapper, intercepts read commands for the following files:
-      * MF /DF.NK/ EF.C.NK.VPN.R2048
-      * MF /DF.AK/ EF.C.AK.AUT.R2048
-      * MF / DF.SAK / EF.C.SAK.AUT.R2048
-    """
-    def __init__(self):
-        self.current_df = b''
-        self.current_ef = b''
-        for reader in readers():
-            try:
-                print(reader)
-                self.connection = reader.createConnection()
-                connection.connect()
-            except NoCardException:
-                print(reader, 'no card inserted')
-            except:
-                print(reader, 'connection failed')
+# From VirtualSmartcard.py
+VPCD_CTRL_LEN = 1
+VPCD_CTRL_OFF = 0
+VPCD_CTRL_ON = 1
+VPCD_CTRL_RESET = 2
+VPCD_CTRL_ATR = 4
 
-    def getATR(self):
-        return self.connection.getATR()
 
-    def execute(self, msg):
-        if msg[1] == CMD_SELECT: # ref: ISO/IEC 7846-4:4:2020, table 62
-            if msg[2] == 0x04: # Select by DF name
-                self.current_df = bytes(msg[5:])
-            elif msg[2] == 0x02: # Select EF unter the DF referenced by curDF
-                self.current_ef = bytes(msg[5:])
+def main(args):
+    """Simulate Virtual SC Card"""
+    # Setup logging
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(asctime)s  [%(levelname)s] %(message)s",
+        datefmt="%d.%m.%Y %H:%M:%S")
+
+    # Patch environment
+    os.environ["PCSCLITE_CSOCK_NAME"] = args.pcsc_sock_name
+
+    # Connect to virtual card server
+    sock = vpc_connect(args.host, args.port)
+
+    # Import here, so the environment is patched before
+    # loading the python `smartcard` package
+    from patch_card.cards import PatchCard
+    card_os = PatchCard(args.reader_num)
+
+    while True:
+        try:
+            (size, msg) = vpc_recv(sock)
+        except socket.error as err:
+            logging.info(err)
+            sys.exit()
+
+        if not size:
+            logging.error(
+                "error in communication protocol (missing size parameter)")
+        elif size == VPCD_CTRL_LEN:
+            if msg == inttostring(VPCD_CTRL_OFF):
+                logging.info("power down")
+                card_os.powerDown()
+            elif msg == inttostring(VPCD_CTRL_ON):
+                logging.info("power up")
+                card_os.powerUp()
+            elif msg == inttostring(VPCD_CTRL_RESET):
+                logging.info("reset")
+                card_os.reset()
+            elif msg == inttostring(VPCD_CTRL_ATR):
+                vpc_send(sock, card_os.getATR())
             else:
-                pass # TODO support all selection mode and keep track of currently selected df
-        if msg[1] == CMD_READ_BINARY: # TODO support Short File Identifiers
-            if self.current_df in CARD_FS and self.current_ef in CARD_FS[self.current_df]:
-                ef = CARD_FS[self.current_df][self.current_ef]
-                # TODO implement read operations on the 'replacement' file
-            
-        if msg in commands_and_response:
-            print("< " + msg.hex())
-            resp_c = response_counter[msg]
-            len_r = len(commands_and_response[msg])
-            resp = commands_and_response[msg][resp_c % len_r]
-            response_counter[msg] += 1
-            print("> " + msg.hex())
-            return resp
-        print("Unknown APDU! " + msg.hex())
-        return b'\x6d\x00'
+                logging.info("unknown control command")
+        else:
+            if size != len(msg):
+                logging.error(
+                    "expected %u bytes, but received only %u",
+                    size, len(msg))
 
-if __name__ == "__main":
-    c = PatchCard()
+            answer = card_os.execute(msg)
+            logging.info("response APDU (%d bytes):\n  %s\n",
+                len(answer), hexdump(answer, indent=2))
+            vpc_send(sock, answer)
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    main(args)
