@@ -28,6 +28,9 @@ def is_seekable(ins):
         0xdc, 0xdd,
     ]
 
+def read_file(filename):
+    with open(filename, mode='rb') as f:
+        return f.read()
 
 def create_filesystem():
     """
@@ -38,21 +41,24 @@ def create_filesystem():
     # AK_AUT
     df = DF(parent=mf, fid=0x01, dfname=DF_AK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC503, shortfid=0x03, data=b"CERT DATA")
+            parent=df, fid=0xC503, shortfid=0x03,
+            data=read_file("certs/AK_AUT.der"))
     df.append(ef)
     mf.append(df)
 
     # NK_VPN
     df = DF(parent=mf, fid=0xAA00, dfname=DF_NK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC505, shortfid=0x05, data=b"CERT DATA")
+            parent=df, fid=0xC505, shortfid=0x05,
+            data=read_file("certs/NK_VPN.der"))
     df.append(ef)
     mf.append(df)
 
     # DF_SAK 
     df = DF(parent=mf, fid=0x02, dfname=DF_SAK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC505, shortfid=0x06, data=b"CERT DATA")
+            parent=df, fid=0xC505, shortfid=0x06,
+            data=read_file("certs/SAK_AUT.der"))
     df.append(ef)
     mf.append(df)
 
