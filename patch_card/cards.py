@@ -94,78 +94,10 @@ class PatchCard(RelayOS):
             0xe4: self.intercept_mf.deleteFile,
         }
 
-        super().__init__(*args, **kwargs)
-
-    def execute(self, msg):
-        """Intercept message"""
-        # Parse PDU
-        try:
-            c = C_APDU(msg)
-            logging.debug("%s", str(c))
-        except ValueError as e:
-            logging.warning(str(e))
-            # Pass to card and return
-            return super().execute(msg)
-
-        # Run on SC
-        reply = super().execute(msg)
-
-        # Run on virtual FS
-        handler = self.intercept_handlers.get(c.ins)
-        if handler and c.ins == CMD_SELECT_FILE:
-            try:
-                # File not found will raise an error
-                self.intercept_mf.selectFile(c.p1, c.p2, c.data)
-                self.intercept_file = True
-            except:
-                self.intercept_file = False
-
-        elif handler and self.intercept_file:
-            v_reply = handler(c.p1, c.p2, c.data)
-            return v_reply
-
-        return reply
-
-
-
-class SimulCard(Iso7816OS):
-    def __init__(self, *args, **kwargs):
-        gen = CardGenerator("iso7816")
-        mf, sam = gen.getCard()
-
-        self.intercept_file = False
-        self.intercept_mf = create_filesystem()
-        self.intercept_handlers = {
-            0x0c: self.intercept_mf.eraseRecord,
-            0x0e: self.intercept_mf.eraseBinaryPlain,
-            0x0f: self.intercept_mf.eraseBinaryEncapsulated,
-            0xa0: self.intercept_mf.searchBinaryPlain,
-            0xa1: self.intercept_mf.searchBinaryEncapsulated,
-            0xa4: self.intercept_mf.selectFile,
-            0xb0: self.intercept_mf.readBinaryPlain,
-            0xb1: self.intercept_mf.readBinaryEncapsulated,
-            0xb2: self.intercept_mf.readRecordPlain,
-            0xb3: self.intercept_mf.readRecordEncapsulated,
-            0xca: self.intercept_mf.getDataPlain,
-            0xcb: self.intercept_mf.getDataEncapsulated,
-            0xd0: self.intercept_mf.writeBinaryPlain,
-            0xd1: self.intercept_mf.writeBinaryEncapsulated,
-            0xd2: self.intercept_mf.writeRecord,
-            0xd6: self.intercept_mf.updateBinaryPlain,
-            0xd7: self.intercept_mf.updateBinaryEncapsulated,
-            0xda: self.intercept_mf.putDataPlain,
-            0xdb: self.intercept_mf.putDataEncapsulated,
-            0xdc: self.intercept_mf.updateRecordPlain,
-            0xdd: self.intercept_mf.updateRecordEncapsulated,
-            0xe0: self.intercept_mf.createFile,
-            0xe2: self.intercept_mf.appendRecord,
-            0xe4: self.intercept_mf.deleteFile,
-        }
-
         self.last_command_offcut = b""
         self.last_command_sw = SW["normal"]
 
-        super().__init__(mf, sam)
+        super().__init__(*args, **kwargs)
 
 
     def format_result(self, seekable, le, data, sw):
@@ -200,7 +132,6 @@ class SimulCard(Iso7816OS):
             logging.warning(str(e))
             # Pass to card and return
             return super().execute(msg)
-
 
         # Run on SC
         reply = super().execute(msg)
