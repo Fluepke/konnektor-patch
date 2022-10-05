@@ -42,7 +42,9 @@ VPCD_CTRL_ATR = 4
 
 
 def main(args):
-    """Simulate Virtual SC Card"""
+    """
+    Virtual Smartcard with Filesystem Interception
+    """
     # Setup logging
     logging.basicConfig(
         level=logging.DEBUG,

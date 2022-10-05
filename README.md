@@ -26,10 +26,10 @@ Wir verwenden einen handelsüblichen [`pcscd`](https://github.com/LudovicRoussea
 
 1. Der bestehene `pcscd` des Herstellers bleibt laufen, sein Socket wird aber an einen neuen Ort verschoben: `mv /var/run/pcscd.comm /var/run/old_pcscd.comm`
 2. Es ist ein handelsüblicher `pcscd` sowie `virtualsmartcard` zu installieren und zu starten. Wichtig ist, dass der `pcscd` konfiguriert wird, lediglich die Treiber für `virtualsmartcard` zu laden. Siehe dazu bspw. `./reader.conf.d`
-3. In dem Verzeichnis `./renewed_certs` sind die verlängerten Zertifikate mit folgenden Dateinamen zu hinterlegen:
-    1. `MF_DF.AK_EF.C.AK.AUT.R2048.der`
-    2. `MF_DF.NK_EF.C.NK.VPN.R2048.der`
-    3. `MF_DF.SAK.EF.C.SAK.AUT.R2048.der`
+3. In dem Verzeichnis `./certs` sind die verlängerten Zertifikate mit folgenden Dateinamen zu hinterlegen:
+    1. `AK_AUT.der`
+    2. `NK_VPN.der`
+    3. `SAK_AUT.der`
 3. Es wird das `./save_400m_euro.py` Python Skript gestartet. Dieses verfolgt in der `execute()` Methode alle APDUs und prüft ob ein Zugriff auf die Zertifikatsdateien erfolgt. Per Environment wird dem Skript die Lokation des bisherigen `pcscd` mitgeteilt, damit eine Kommunikation zur echten SmartCard weiterhin möglich ist: `PCSCLITE_CSOCK_NAME=/var/run/old_pcscd.comm ./save_400m_euro.py`
 
 ## Installation
