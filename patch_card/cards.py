@@ -41,7 +41,7 @@ def create_filesystem():
     # AK_AUT
     df = DF(parent=mf, fid=0x01, dfname=DF_AK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC503, shortfid=0x03,
+            parent=df, fid=EF_C_AK_AUT_R2048, shortfid=0x03,
             data=read_file("certs/AK_AUT.der"))
     df.append(ef)
     mf.append(df)
@@ -49,7 +49,7 @@ def create_filesystem():
     # NK_VPN
     df = DF(parent=mf, fid=0xAA00, dfname=DF_NK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC505, shortfid=0x05,
+            parent=df, fid=EF_C_NK_VPN_R2048, shortfid=0x05,
             data=read_file("certs/NK_VPN.der"))
     df.append(ef)
     mf.append(df)
@@ -57,7 +57,7 @@ def create_filesystem():
     # DF_SAK 
     df = DF(parent=mf, fid=0x02, dfname=DF_SAK)
     ef = TransparentStructureEF(
-            parent=df, fid=0xC505, shortfid=0x06,
+            parent=df, fid=EF_C_SAK_AUT_R2048, shortfid=0x06,
             data=read_file("certs/SAK_AUT.der"))
     df.append(ef)
     mf.append(df)
