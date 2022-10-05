@@ -1,12 +1,14 @@
 # TI Konnektor Patch
 
-Die **Telematik Infrastruktur** (TI) Konnektoren enthalten Smartcards, auf denen Zertifikate gespeichert sind.
-Diese Zertifikate haben genau wie TLS Zertifikate aus Sicherheitsgründen ein Verfallsdatum.
-Leider haben nicht alle Hersteller einen Mechanismus entwickelt, diese Zertifikate zu verlängern und stattdessen zu Lasten der Umwelt ein Produkt mit geplanter Obsoloszenz verkauft.
+Jeder Konnektor [Link hier einfügen] der **Telematik Infrastruktur** (TI) enthält mehrere Smartcards auf denen Zertifikate gespeichert werden.
+Aus Sicherheitsgründen haben diese Zertifikate ein Verfallsdatum, das heisst sie müssen regelmäßig erneut werden.
+Nicht alle Hersteller*innen haben einen Mechanismus zur Verlängerung der Zertifikate implementert, nach auslaufen der Zertifikate muss also der gesamte Konnektor getauscht werden.
+Aktuelle laufen die ersten Zertifikate aus. 
 
-Nun hat sich die gematik, welche die TI verantwortet, zum Austausch der Konnektoren entschieden, was erhebliche **Kosten von 300 bis 400 Millionen Euro** erzeugt!
+Die gematik, das für die TI verantwortkiche Unternehmen, hat sich entschieden alle Konnektoren entsprechen auszutauschen. Dies erzeugt Kosten im Bereich vom **300 bis 400 Millionen Euro**
 
-Wir zeigen hier <u>kostenlos</u> eine Softwarelösung für das Problem auf, von der die Hersteller behaupten, dass sie unmöglich sei.
+
+Wir zeigen hier <u>kostenlos</u> eine Softwarelösung für das Problem, von der die Hersteller behaupten, dass sie unmöglich sei.
 
 ## Funktionsweise
 
