@@ -1,6 +1,7 @@
 
 import logging
 
+from virtualsmartcard.SWutils import SW
 from virtualsmartcard.ConstantDefinitions import FDB
 from virtualsmartcard.cards.Relay import RelayOS
 from virtualsmartcard.CardGenerator import CardGenerator
@@ -19,6 +20,13 @@ DF_SAK = bytes([0xD2, 0x76, 0x00, 0x01, 0x44, 0x04])
 EF_C_AK_AUT_R2048  = 0xC503 # bytes([0xC5, 0x03])
 EF_C_NK_VPN_R2048  = 0xC505 # bytes([0xC5, 0x05])
 EF_C_SAK_AUT_R2048 = 0xC506 # bytes([0xC5, 0x06])
+
+
+def is_seekable(ins):
+    return ins in [
+        0xb0, 0xb1, 0xd0, 0xd1, 0xd6, 0xd7, 0xa0, 0xa1, 0xb2, 0xb3,
+        0xdc, 0xdd,
+    ]
 
 
 def create_filesystem():
@@ -154,7 +162,32 @@ class SimulCard(Iso7816OS):
             0xe4: self.intercept_mf.deleteFile,
         }
 
+        self.last_command_offcut = b""
+        self.last_command_sw = SW["normal"]
+
         super().__init__(mf, sam)
+
+
+    def format_result(self, seekable, le, data, sw):
+        """See Iso7816O implementation"""
+        if not seekable:
+            self.last_command_offcut = data[le:]
+            l = len(self.last_command_offcut)
+            if l == 0:
+                self.last_command_sw = SW["NORMAL"]
+            else:
+                self.last_command_sw = sw
+                sw = SW["NORMAL_REST"] + min(0xff, l)
+        else:
+            if le > len(data):
+                sw = SW["WARN_EOFBEFORENEREAD"]
+
+        if le is not None:
+            result = data[:le]
+        else:
+            result = data[:0]
+
+        return R_APDU(result, inttostring(sw)).render()
 
 
     def execute(self, msg):
@@ -183,7 +216,11 @@ class SimulCard(Iso7816OS):
                 self.intercept_file = False
 
         elif handler and self.intercept_file:
-            v_reply = handler(c.p1, c.p2, c.data)
-            return v_reply
+            sw, result = handler(c.p1, c.p2, c.data)
+            return self.format_result(
+                is_seekable(c.ins),
+                c.effective_Le,
+                result,
+                sw)
 
         return reply
