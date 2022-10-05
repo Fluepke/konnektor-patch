@@ -91,8 +91,8 @@ def main(args):
                     size, len(msg))
 
             answer = card_os.execute(msg)
-            #logging.info("response APDU (%d bytes):\n  %s\n",
-            #    len(answer), hexdump(answer, indent=2))
+            logging.info("response APDU (%d bytes):\n  %s\n",
+                len(answer), hexdump(answer, indent=2))
             vpc_send(sock, answer)
 
 
