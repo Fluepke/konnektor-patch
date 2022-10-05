@@ -40,6 +40,7 @@ VPCD_CTRL_ON = 1
 VPCD_CTRL_RESET = 2
 VPCD_CTRL_ATR = 4
 
+
 def main(args):
     """Simulate Virtual SC Card"""
     # Setup logging
@@ -56,7 +57,7 @@ def main(args):
 
     # Import here, so the environment is patched before
     # loading the python `smartcard` package
-    from patch_card.cards import PatchCard, SimulCard
+    from patch_card.cards import PatchCard
     card_os = PatchCard(args.reader_num)
 
     while True:

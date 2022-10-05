@@ -95,7 +95,7 @@ class PatchCard(RelayOS):
         }
 
         self.last_command_offcut = b""
-        self.last_command_sw = SW["normal"]
+        self.last_command_sw = SW["NORMAL"]
 
         super().__init__(*args, **kwargs)
 
