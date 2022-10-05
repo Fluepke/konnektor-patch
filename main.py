@@ -72,13 +72,13 @@ def main(args):
                 "error in communication protocol (missing size parameter)")
         elif size == VPCD_CTRL_LEN:
             if msg == inttostring(VPCD_CTRL_OFF):
-                logging.info("Power Down")
+                logging.info("power down")
                 card_os.powerDown()
             elif msg == inttostring(VPCD_CTRL_ON):
-                logging.info("Power Up")
+                logging.info("power up")
                 card_os.powerUp()
             elif msg == inttostring(VPCD_CTRL_RESET):
-                logging.info("Reset")
+                logging.info("reset")
                 card_os.reset()
             elif msg == inttostring(VPCD_CTRL_ATR):
                 vpc_send(sock, card_os.getATR())
@@ -93,7 +93,6 @@ def main(args):
             answer = card_os.execute(msg)
             logging.info("response APDU (%d bytes):\n  %s\n",
                 len(answer), hexdump(answer, indent=2))
-
             vpc_send(sock, answer)
 
 
