@@ -40,8 +40,8 @@ Für die Verlängerung der Zertifikatslaufzeiten braucht es die *gematik*, denn 
 
 ## Forderungen
 
-Wir fordern die gematik auf, ihre CA für die Verlängerung der Laufzeiten einzusetzen.
-Wir fordern die Hersteller auf, die Laufzeitverlängerung umzusetzen, statt das Gesundheitssystem durch die aufgerufenen astronomischen Preisen auszubeuten.
-Wir fordern die Bundesgesundheitsministerium auf, die Hersteller endlich an die Leine zu nehmen und der Geldverbrennung in der TI ein Ende zu setzen.
-Wir fordern das Umweltministerium auf, die allein schon aus Nachhaltigkeitsgesichtspunkten völlig sinnlose tausendfache Vernichtung einsatzfähiger Hardware zu verhindern.
-Wir fordern das BSI auf, den Einsatz der geringen Schlüssellänge von 2048 Bit für den verwendeten RSA-Algorithmus in diesem Sonderfall auch über das Jahr 2025 zu erlauben, da es sich lediglich um die äußere Sicherungsschicht (VPN) handelt. Innenliegende Kommunikation, die medizinische Daten trägt, ist zusätzlich mit TLS in einer modernen Konfiguration gesichert.
+- Wir fordern die gematik auf, ihre CA für die Verlängerung der Laufzeiten einzusetzen.
+- Wir fordern die Hersteller auf, die Laufzeitverlängerung umzusetzen, statt das Gesundheitssystem durch die aufgerufenen astronomischen Preisen -auszubeuten.
+- Wir fordern die Bundesgesundheitsministerium auf, die Hersteller endlich an die Leine zu nehmen und der Geldverbrennung in der TI ein Ende zu setzen.
+- Wir fordern das Umweltministerium auf, die allein schon aus Nachhaltigkeitsgesichtspunkten völlig sinnlose tausendfache Vernichtung einsatzfähiger Hardware zu verhindern.
+- Wir fordern das BSI auf, den Einsatz der geringen Schlüssellänge von 2048 Bit für den verwendeten RSA-Algorithmus in diesem Sonderfall auch über das Jahr 2025 zu erlauben, da es sich lediglich um die äußere Sicherungsschicht (VPN) handelt. Innenliegende Kommunikation, die medizinische Daten trägt, ist zusätzlich mit TLS in einer modernen Konfiguration gesichert.
