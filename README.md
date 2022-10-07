@@ -5,7 +5,7 @@ Aus Sicherheitsgründen haben diese Zertifikate ein Verfallsdatum, das heißt si
 Nicht alle Hersteller*innen haben einen Mechanismus zur Verlängerung der Zertifikate implementert, nach Auslaufen der Zertifikate muss also der gesamte Konnektor getauscht werden.
 Aktuelle laufen die ersten Zertifikate aus. 
 
-Die gematik, das für die TI verantwortliche Unternehmen, hat sich entschieden, alle Konnektoren entsprechen auszutauschen. Dies erzeugt Kosten im Bereich vom **300 bis 400 Millionen Euro**.
+Die Gesellschafterversammlung der gematik hat sich [am 28.02.2022](https://www.gematik.de/newsroom/news-detail/aktuelles-erste-konnektoren-laufen-im-september-aus) entschieden, alle TI Konnektoren entsprechend auszutauschen. Die gematik ist das für die TI verantwortliche Unternehmen und entwickelt Spezifikationen für TI-Konnektoren, anhand derer die Hersteller ihre Produkte entwickeln. Der Austausch der Konnektoren soll das Gesundheitssystem mit Kosten im Bereich vom **300 bis 400 Millionen Euro** belasten.
 
 
 Wir zeigen hier eine <u>kostenlose</u> Softwarelösung für das Problem, von der die Hersteller behaupten, dass sie unmöglich sei.
