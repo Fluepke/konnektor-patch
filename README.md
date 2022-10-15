@@ -2,12 +2,12 @@
 
 Jeder [Konnektor](https://fachportal.gematik.de/hersteller-anbieter/komponenten-dienste/konnektor), der zum Zugriff auf die **Telematik Infrastruktur** (TI) der *gematik* benötigt wird, enthält mehrere Smartcards, auf denen Zertifikate gespeichert werden.
 Aus Sicherheitsgründen haben diese Zertifikate ein Verfallsdatum. Daher müssen sie regelmäßig erneut werden.
-Nicht alle Hersteller*innen haben einen Mechanismus zur Verlängerung der Zertifikate implementert. Nach Auslaufen der Zertifikate muss also der gesamte Konnektor getauscht werden.
+Nicht alle Hersteller haben einen Mechanismus zur Verlängerung der Zertifikate implementert. Nach Auslaufen der Zertifikate muss also der gesamte Konnektor getauscht werden.
 Derzeit laufen die ersten Zertifikate aus. 
 
 Verantwortlich für die TI ist die gematik. Deren Gesellschafter [haben entschieden](https://www.gematik.de/newsroom/news-detail/aktuelles-erste-konnektoren-laufen-im-september-aus), diese Konnektoren auszutauschen. Das erzeugt Kosten im Bereich vom **300 bis 400 Millionen Euro**.
 
-Wir zeigen hier eine **kostenlose** Softwarelösung für das Problem, von der die Hersteller*innen behaupten, dass sie unmöglich sei.
+Wir zeigen hier eine **kostenlose** Softwarelösung für das Problem, von der die Hersteller behaupten, dass sie unmöglich sei.
 
 ## Funktionsweise
 
