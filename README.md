@@ -17,7 +17,7 @@ Unser Patch klinkt sich in die Kommunkation zwischen der Software auf dem Konnek
 
 Sowohl bei dem Produkt der *Secunet* als auch bei der *CompuGroup Medical* kommt die Software *PC/SC Smart Card Daemon* ([`pcscd`](https://github.com/LudovicRousseau/PCSC)) zur Kommunikation mit den SmartCards zum Einsatz. Diese Software öffnet einen [Unix Domain Socket](https://de.wikipedia.org/wiki/Unix_Domain_Socket) (z. B. in `/var/run/pcscd.comm`), über den Anwendungen mit dem `pcscd` interagieren, um der Smartcard Befehle zu senden und Antworten von dieser zu empfangen.
 
-Unser Referenzimplementierung für die Verlängerung der Zertifikatslaufzeiten besteht darin, an der Stelle des ursprünglichen `pcscd` einen modifizierte Version zu starten, die alle Befehle an die SmartCard wie gewohnt weiterleitet. Wird jedoch der Befehl zum Auslesen eines der drei vom Auslaufen betroffenen Zertifikate gesendet, antwortet unser `pcscd` mit einem verlängerten Zertifikat aus dem Dateisystem.
+Unsere Referenzimplementierung für die Verlängerung der Zertifikatslaufzeiten besteht darin, an der Stelle des ursprünglichen `pcscd` eine modifizierte Version zu starten, die alle Befehle an die SmartCard wie gewohnt weiterleitet. Wird jedoch der Befehl zum Auslesen eines der drei vom Auslaufen betroffenen Zertifikate gesendet, antwortet unser `pcscd` mit einem verlängerten Zertifikat aus dem Dateisystem.
 
 Dadurch sind keine Veränderungen an der bestehenden Software der Hersteller notwendig. Es muss lediglich eine Teilkomponente des Linux-Systems, auf dem die Hersteller ihre TI Konnektoren basiert haben, umkonfiguriert bzw. ausgetauscht werden.
 
