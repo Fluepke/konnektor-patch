@@ -42,6 +42,6 @@ Für die Verlängerung der Zertifikatslaufzeiten braucht es die *gematik*, denn 
 ## Forderungen
 
 - Wir fordern die **gematik** auf, ihre CA für die Verlängerung der Laufzeiten einzusetzen.
-- Wir fordern **alle Hersteller** ([CompuGroup Medical](https://www.cgm.com/deu_de), [secunet](https://www.secunet.com/), [RISE](https://www.rise-konnektor.de/)) auf, die Laufzeitverlängerung umzusetzen, statt das Gesundheitssystem durch die aufgerufenen astronomischen Preisen auszubeuten.
+- Wir fordern **alle Hersteller** ([CompuGroup Medical](https://www.cgm.com/deu_de), [secunet](https://www.secunet.com/), [RISE](https://www.rise-konnektor.de/)) auf, die Laufzeitverlängerung umzusetzen, statt das Gesundheitssystem durch die aufgerufenen astronomischen Preise auszubeuten.
 - Wir fordern das **Bundesgesundheitsministerium** auf, die Hersteller endlich an die Leine zu nehmen und der Geldverbrennung in der TI ein Ende zu setzen.
 - Wir fordern das **Umweltministerium** auf, die allein schon aus Nachhaltigkeitsgesichtspunkten völlig sinnlose tausendfache Vernichtung einsatzfähiger Hardware zu verhindern.
